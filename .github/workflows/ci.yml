@@ -1,0 +1,38 @@
+name: Angular CI
+
+# Trigger on pushes and pull requests to main branch
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+
+    # Use a Linux runner
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout your repository code
+      - uses: actions/checkout@v3
+
+      # Set up Node.js (version 20)
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
+      # Install dependencies
+      - name: Install dependencies
+        run: npm install
+
+      # Run tests in headless Chrome
+      - name: Run tests
+        run: npm test -- --watch=false --browsers=ChromeHeadless
+
+      # Build Angular app for production
+      - name: Build Angular app
+        run: npm run build -- --prod
